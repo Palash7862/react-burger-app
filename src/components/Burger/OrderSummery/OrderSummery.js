@@ -24,7 +24,7 @@ class OrderSummery extends Component {
                 <p><strong>Total Price : ${this.props.price.toFixed(2)}</strong></p>
                 <p>Continue to Checkout?</p>
                 <Button btnType='Danger' clicked={this.props.modalClosed}>Cancel</Button>
-                <Button btnType='Success' clicked={this.props.modalClosed}>Continue</Button>
+                <Button btnType='Success' clicked={this.props.continueOrder}>Continue</Button>
             </Oux>
         );
     }  
