@@ -5,7 +5,7 @@ import Classes from './Toolbar.css';
 
 const toolbar = (props) => (
     <header className={Classes.Toolbar}>
-        <div>Menu</div>
+        <div onClick={props.SideDrawerToggle}>Menu</div>
         <Logo />
         <NavigationsItems />
     </header>

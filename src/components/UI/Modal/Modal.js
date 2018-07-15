@@ -1,20 +1,33 @@
-import React from 'react';
-import Oux from '../../../hoc/Oux';
+import React, { Component } from 'react';
+import Oux from '../../../hoc/Oux/Oux';
 import Classes from './Modal.css';
 import Backdrop from '../Backdrop/Backdrop';
 
-const modal = (props) => (
-    <Oux>
-        <Backdrop show={props.show} modalClosed={props.modalClosed}/>
-        <div 
-            style={{
-                transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                opacity: props.show ? '1': '0'
-            }}
-            className={Classes.Modal}>
-            {props.children}
-        </div>
-    </Oux>
-);
+class Modal extends Component {
 
-export default modal;
+    shouldComponentUpdate(nextProps, nextState){
+        return nextProps.show !== this.props.show;
+    }
+
+    componentWillUpdate(){
+        console.log('[Model] WillUpdate');
+    }
+
+    render(){
+        return(
+            <Oux>
+                <Backdrop show={this.props.show} modalClosed={this.props.modalClosed}/>
+                <div 
+                    style={{
+                        transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                        opacity: this.props.show ? '1': '0'
+                    }}
+                    className={Classes.Modal}>
+                    {this.props.children}
+                </div>
+            </Oux>
+        );
+    } 
+};
+
+export default Modal;

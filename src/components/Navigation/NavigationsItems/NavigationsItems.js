@@ -6,6 +6,7 @@ const navigationsItems = (props) => {
         <nav>
             <ul className={Classes.NavigationItems}>
                 <li><a href='/' className={Classes.active}>Home</a></li> 
+                <li><a href='/' >About</a></li> 
             </ul>
         </nav>
     );
