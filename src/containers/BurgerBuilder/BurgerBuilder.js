@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Oux from '../../hoc/Oux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummery from '../../components/Burger/OrderSummery/OrderSummery';
 
 const INGRED_PRICES = {
     salad: 0.5,
@@ -19,8 +21,22 @@ class BurgerBuilder extends Component {
             cheese:0,
             meat: 0
         },
-        totalPrice: 4
-    }
+        totalPrice: 4,
+        purchasesAble: false,
+        purchaesing: false
+    } 
+
+    updatePurchasesAble(){ 
+        const ingredient = {
+            ...this.state.ingredients
+        }; 
+        const sum = Object.keys(ingredient).map(iKey=>{
+            return ingredient[iKey];
+        }).reduce((sum, el)=>{
+            return sum + el;
+        }, 0); 
+        this.setState({ purchasesAble: sum > 0});  
+    } 
 
     addIngredientHandal = (type) => {
         const oldCount = this.state.ingredients[type];
@@ -30,11 +46,11 @@ class BurgerBuilder extends Component {
         };
         updateIngredient[type] = newCount;
         const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice + INGRED_PRICES[type];
-        this.setState({
-            ingredients: updateIngredient,
-            totalPrice: newPrice
-        });
+        const newPrice = oldPrice + INGRED_PRICES[type]; 
+        this.setState({ ingredients: updateIngredient, totalPrice: newPrice }, ()=> {
+            //console.log(this.state.ingredients);  
+            this.updatePurchasesAble();  
+       });   
     };
 
     removeIngredientHandal = (type) => {
@@ -47,14 +63,22 @@ class BurgerBuilder extends Component {
             updateIngredient[type] = newCount;
             const oldPrice = this.state.totalPrice;
             const newPrice = oldPrice - INGRED_PRICES[type];
-            this.setState({
-                ingredients: updateIngredient,
-                totalPrice: newPrice
-            });
+            this.setState({ ingredients: updateIngredient, totalPrice: newPrice }, ()=> {
+                //console.log(this.state.ingredients);   
+                this.updatePurchasesAble();  
+           });
         }  
-    };
+    };  
 
-    render () {
+    purchaesHandaler = () => {
+        this.setState({purchaesing: true});
+    }
+    purchaesClosedHandaler = () => {
+        this.setState({purchaesing: false});
+    }
+
+    render () {  
+        
         const disableInfo = {
             ...this.state.ingredients
         };
@@ -64,12 +88,20 @@ class BurgerBuilder extends Component {
         
         return ( 
             <Oux>
-                <Burger ingredients={this.state.ingredients} />
+                <Modal show={this.state.purchaesing} modalClosed={this.purchaesClosedHandaler}>
+                    <OrderSummery 
+                        ingredients={this.state.ingredients} 
+                        modalClosed={this.purchaesClosedHandaler}
+                        price={this.state.totalPrice}/>
+                </Modal>
+                <Burger ingredients={this.state.ingredients} /> 
                 <BuildControls 
                     ingredientAdd={this.addIngredientHandal} 
                     ingredientRemove={this.removeIngredientHandal} 
                     disabled={disableInfo} 
-                    price={this.state.totalPrice}/>
+                    price={this.state.totalPrice} 
+                    ordered={this.purchaesHandaler}
+                    purchasesAble={this.state.purchasesAble}/>
             </Oux>
         );
     }
