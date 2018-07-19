@@ -1,0 +1,26 @@
+.contactDataWarp {
+    display: block;
+    width: 100%;
+}
+.contactDataWarp .condtactFormInner {
+    width: 50%;
+    margin: 0px auto;
+}
+.condtactFormInner input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 3px -1px #ddd;
+}
+.condtactFormInner .error { 
+    box-shadow: 1px 1px 3px -1px red;
+}
+.condtact-form-inner .btn-group {
+    width: 100%;
+    display: block;
+}
+.condtact-form-inner .btn-group .error {
+    box-shadow: 1px 1px 3px -1px green;
+}
