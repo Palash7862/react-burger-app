@@ -11,8 +11,7 @@ class OrderDetails extends Component {
 
     componentWillMount(){
         axios.get('https://react-bugger-app.firebaseio.com/order.json')
-            .then(response=>{
-                console.log(); 
+            .then(response=>{ 
                 const newOrders = Object.keys(response.data).map(igKey=>{
                     const singleOrder = {
                         id: igKey,

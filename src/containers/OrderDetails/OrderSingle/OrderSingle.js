@@ -1,7 +1,6 @@
 import React from 'react';
 
-const OrderSingle = (props) => {
-    console.log(props.ingredients);
+const OrderSingle = (props) => { 
     let ing = '';
     for(let key in props.ingredients){
         ing += key+' ('+props.ingredients[key]+'), ';

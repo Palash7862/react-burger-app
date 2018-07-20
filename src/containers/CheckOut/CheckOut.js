@@ -6,8 +6,7 @@ import ContactData from './ContactData/ContactData';
 import Button from '../../components/UI/Button/Button'; 
 import axios from '../../hoc/AxiosOrder/AxiosOrder';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import Modal from '../../components/UI/Modal/Modal';
-import jQuery from 'jquery';
+import Modal from '../../components/UI/Modal/Modal'; 
 
 
 class CheckOut extends Component {
