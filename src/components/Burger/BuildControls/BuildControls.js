@@ -14,6 +14,7 @@ const buildControls = (props) => (
     <p>Current Price : ${props.price.toFixed(2)}</p>
         {controls.map(cltr =>(
             <BuildControl 
+                price={props.ingprices[cltr.type]} 
                 key={cltr.label} 
                 lavel={cltr.label} 
                 added={() => props.ingredientAdd(cltr.type)} 

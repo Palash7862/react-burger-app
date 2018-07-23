@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Oux from './../../hoc/Oux/Oux';
 import WithErrorHandal from '../../hoc/WithErrorHandal/WithErrorHandal';
 import Burger from '../../components/Burger/Burger';
@@ -10,10 +11,7 @@ import Modal from '../../components/UI/Modal/Modal';
 
 
 class CheckOut extends Component {
-    state = {
-        ingredients: { 
-        }, 
-        totalPrice: '',
+    state = { 
         address: {
             name: '',
             email: '',
@@ -25,17 +23,7 @@ class CheckOut extends Component {
         loading: false,   
     } 
 
-    componentWillMount(){ 
-        //console.log(this.props.location.state.price);
-        const query = new URLSearchParams(this.props.location.search);
-        const ingredients = {};
-        for(let param of query.entries()){
-            ingredients[param[0]] =  +param[1]; 
-        } 
-        this.setState({
-            ingredients: ingredients,
-            totalPrice: this.props.location.state.price
-        });
+    componentWillMount(){
     }
 
     checkoutCancelHandaler = () => { 
@@ -49,8 +37,8 @@ class CheckOut extends Component {
         event.preventDefault();  
         this.setState({loading: true});
         const order = {
-            ingredient: this.state.ingredients,
-            price: this.state.totalPrice, 
+            ingredient: this.props.ings,
+            price: this.props.price, 
             customer: {
                 name: this.state.address.name, 
                 email: this.state.address.email, 
@@ -95,7 +83,7 @@ class CheckOut extends Component {
         return (
             <Oux> 
                 <div className="checkout-warp" style={{textAlign: 'center'}}>
-                    <Burger ingredients={this.state.ingredients} />
+                    <Burger ingredients={this.props.ings} />
                     {  checkoutBtn }
                 </div> 
                 {this.state.contactFS ? <ContactData 
@@ -110,5 +98,11 @@ class CheckOut extends Component {
         );
     }
 }
-
-export default WithErrorHandal(CheckOut, axios);
+const mapStateToProps = state =>{
+    return {
+        ings: state.ingredients,
+        price: state.totalPrice, 
+        ingprices: state.initprices
+    }
+}
+export default connect(mapStateToProps)(WithErrorHandal(CheckOut, axios));
