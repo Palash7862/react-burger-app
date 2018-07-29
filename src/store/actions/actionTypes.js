@@ -1,0 +1,15 @@
+export const ADD_INGREDIENT             = 'ADD_INGREDIENT';
+export const REMOVE_INGREDIENT          = 'REMOVE_INGREDIENT';
+export const SET_INGREDIENT             = 'SET_INGREDIENT';
+export const FATCH_INGREDIENT_FAILD     = 'FATCH_INGREDIENT_FAILD';
+
+export const PURCHES_INIT               = 'PURCHES_INIT';
+export const PURCHES_PROCESS_START      = 'PURCHES_PROCESS_START';
+export const PURCHES_PROCESS_SUCCESS    = 'PURCHES_PROCESS_SUCCESS';
+export const PURCHES_PROCESS_FAILD      = 'PURCHES_PROCESS_FAILD';
+export const PURCHES_PROCESS            = 'PURCHES_PROCESS';
+
+export const ORDER_FETCH_START      = 'ORDER_FETCH_START';
+export const ORDER_FETCH_SUCCESS    = 'ORDER_FETCH_SUCCESS';
+export const ORDER_FETCH_FAILD      = 'ORDER_FETCH_FAILD';
+export const ORDER_FETCH            = 'ORDER_FETCH';

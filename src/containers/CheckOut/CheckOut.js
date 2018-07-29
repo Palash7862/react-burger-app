@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Oux from './../../hoc/Oux/Oux';
+import { Redirect } from 'react-router-dom';
+import * as orderActions from '../../store/actions/index';
+import Oux from '../../hoc/Oux/Oux';
 import WithErrorHandal from '../../hoc/WithErrorHandal/WithErrorHandal';
 import Burger from '../../components/Burger/Burger';
 import ContactData from './ContactData/ContactData';
@@ -19,8 +21,7 @@ class CheckOut extends Component {
             state: '', 
             zipcode: ''
         }, 
-        contactFS: false, 
-        loading: false,   
+        contactFS: false 
     } 
 
     componentWillMount(){
@@ -35,7 +36,7 @@ class CheckOut extends Component {
 
     orderPlaceHandaler = (event) =>{
         event.preventDefault();  
-        this.setState({loading: true});
+        //this.setState({loading: true});
         const order = {
             ingredient: this.props.ings,
             price: this.props.price, 
@@ -50,17 +51,7 @@ class CheckOut extends Component {
             }, 
             deliveryMethod: 'Fast Way'
         }
-        axios.post('/order.json', order)
-            .then(response=>{
-               // console.log(response);
-                this.setState({loading: false}); 
-                this.props.history.push('/');
-            })
-            .catch(error=>{
-                this.setState({loading: false});
-                //console.log(error.getMessage());
-            });
-        
+        this.props.onParchesProcess(order); 
     }
     inputChangeHandaler =  (event) => { 
         const InputName = event.target.name;
@@ -73,6 +64,7 @@ class CheckOut extends Component {
     }
 
     render(){
+        let checkout    = <Redirect to="/" />;
         let checkoutBtn = null;
         if(!this.state.contactFS){
             checkoutBtn = <Oux>
@@ -80,29 +72,41 @@ class CheckOut extends Component {
                 <Button btnType="Success" clicked={ this.contactFormShowHandaler}>Continue</Button>
                 </Oux>;
         }  
-        return (
-            <Oux> 
-                <div className="checkout-warp" style={{textAlign: 'center'}}>
-                    <Burger ingredients={this.props.ings} />
-                    {  checkoutBtn }
-                </div> 
-                {this.state.contactFS ? <ContactData 
-                    orderPlaceHandaler={this.orderPlaceHandaler} 
-                    inputChangeHandaler={this.inputChangeHandaler} /> : null }
-               {this.state.loading ? 
-                    <Modal show={this.state.loading} >
-                        <Spinner/> 
-                    </Modal>
-                : null }
-            </Oux>
-        );
+        if(this.props.ings){ 
+            checkout = ( 
+                <Oux>  
+                    {this.props.prochesed ? <Redirect to="/" />: null}
+                    <div className="checkout-warp" style={{textAlign: 'center'}}>
+                        <Burger ingredients={this.props.ings} />
+                        {  checkoutBtn }
+                    </div> 
+                    {this.state.contactFS ? <ContactData 
+                        orderPlaceHandaler={this.orderPlaceHandaler} 
+                        inputChangeHandaler={this.inputChangeHandaler} /> : null }
+                {this.props.loading ? 
+                        <Modal show={this.props.loading} >
+                            <Spinner/> 
+                        </Modal>
+                    : null }
+                </Oux>
+            );
+        }
+        return checkout;
     }
 }
 const mapStateToProps = state =>{
     return {
-        ings: state.ingredients,
-        price: state.totalPrice, 
-        ingprices: state.initprices
+        ings: state.bbr.ingredients,
+        price: state.bbr.totalPrice, 
+        prochesed: state.opr.prochesed, 
+        loading: state.opr.loading 
     }
 }
-export default connect(mapStateToProps)(WithErrorHandal(CheckOut, axios));
+
+const mapDispatchToProps = dispatch =>{
+    return {
+        onParchesProcess: (order)=>dispatch(orderActions.purchesProcess(order)), 
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandal(CheckOut, axios));
